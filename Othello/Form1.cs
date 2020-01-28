@@ -33,6 +33,10 @@ namespace Othello
         //2D array for the 8x8 board.
         private int[,] board;
 
+        private int spaces_set;
+
+        private bool passed;
+
 
         /*
          * 
@@ -58,6 +62,7 @@ namespace Othello
                 clearBoard();
             }
 
+            passed = true;
             this.playing = true;
             this.black_pieces_left = 30;
             this.white_pieces_left = 30;
@@ -102,9 +107,20 @@ namespace Othello
          * 
          */
 
-        private void setSpace(int row, int colum, int color, PictureBox pictureBox)
+        private bool setSpace(int row, int colum, int color, PictureBox pictureBox)
         {
-                      
+            passed = true;
+            if(spaces_set > 5)
+            {
+                int opposite = 1;
+                if (color == 1)
+                    opposite = 0;
+                if(!isOppositeNextTo(row,colum,opposite))
+                {
+                    passed = false;
+                    return false;
+                }
+            }       
             pictureBox = getBoxFromRowAndColum(row, colum);
             if (color == 0) //Black
             {
@@ -120,6 +136,112 @@ namespace Othello
                 pictureBox.Image = Properties.Resources.white;
 
             }
+            spaces_set++;
+            return true;
+        }
+
+        private bool isOppositeNextTo(int row, int colum, int opposite)
+        {
+            try
+            {
+                if (this.board[row - 1, colum - 1] == opposite)
+                {
+                    return true;
+                }
+            }
+            catch (IndexOutOfRangeException ee)
+            {
+
+            }
+
+            try
+            {
+                if (this.board[row - 1, colum + 1] == opposite)
+                {
+                    return true;
+                }
+            }
+            catch (IndexOutOfRangeException ee)
+            {
+
+            }
+
+            try
+            {
+                if (this.board[row - 1, colum] == opposite)
+                {
+                    return true;
+                }
+            }
+            catch (IndexOutOfRangeException ee)
+            {
+
+            }
+
+            try
+            {
+                if (this.board[row + 1, colum - 1] == opposite)
+                {
+                    return true;
+                }
+            }
+            catch (IndexOutOfRangeException ee)
+            {
+
+            }
+
+            try
+            {
+                if (this.board[row, colum - 1] == opposite)
+                {
+                    return true;
+                }
+            }
+            catch (IndexOutOfRangeException ee)
+            {
+
+            }
+
+            try
+            {
+                if (this.board[row + 1, colum - 1] == opposite)
+                {
+                    return true;
+                }
+            }
+            catch (IndexOutOfRangeException ee)
+            {
+
+            }
+
+            try
+            {
+                if (this.board[row + 1, colum + 1] == opposite)
+                {
+                    return true;
+                }
+            }
+            catch (IndexOutOfRangeException ee)
+            {
+
+            }
+
+            try
+            {
+                if (this.board[row + 1, colum] == opposite)
+                {
+                    return true;
+                }
+            }
+            catch (IndexOutOfRangeException ee)
+            {
+
+            }
+
+
+
+
+            return false;
         }
 
         //Gets the amount of Black controlled spaces on the board.
@@ -168,6 +290,9 @@ namespace Othello
 
         private void checkForOverTurns(int row, int colum)
         {
+            if (!passed)
+                return;
+
             //Color of the space
             int color = this.board[row, colum];
             //If the space is empty it returns
@@ -250,12 +375,32 @@ namespace Othello
                 }
             }
 
+            int s5 = colum + 1;
+            int ss5 = -1;
+            for (int i = s5; i < 8; i++)
+            {
+                if (this.board[row, i] == -1)
+                {
+                    break;
+                }
+                else if (this.board[row, i] == color)
+                {
+                    ss4 = i;
+                    for (int q = s5; q < ss5; q++)
+                    {
+                        setSpace(row, q, color, null);
+                    }
+                }
+            }
+
         }
 
 
         //Switches the turn
         private void switchTurn()
         {
+            if (!passed)
+                return;
             //Changes the turn and sets the pieces to -1;
             if (black_turn)
             {
