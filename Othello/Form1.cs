@@ -110,7 +110,7 @@ namespace Othello
         private bool setSpace(int row, int colum, int color, PictureBox pictureBox)
         {
             passed = true;
-            if(spaces_set > 5)
+            if(spaces_set > 3)
             {
                 int opposite = 1;
                 if (color == 1)
@@ -375,23 +375,73 @@ namespace Othello
                 }
             }
 
-            int s5 = colum + 1;
-            int ss5 = -1;
+            //
+            /*
+            int s5 = row + 1;
+            int ss5row = 0;
+            int ss5colum = 0;
+            int ss5 = colum + 1;
+            int ii = colum + 1;
             for (int i = s5; i < 8; i++)
             {
-                if (this.board[row, i] == -1)
+                try
+                {
+                    if (this.board[i, ii++] == -1)
+                    {
+                        return;
+                    }
+                    else if (this.board[i, ii] == color)
+                    {
+                        ss5row = i;
+                        ss5colum = ii;
+                        for (int q = s5; q < ss5row; q++)
+                        {
+                            setSpace(q, ss5++, color, null);
+                        }
+                    }
+                }
+                catch (IndexOutOfRangeException ee)
                 {
                     break;
                 }
-                else if (this.board[row, i] == color)
+
+
+            }*/
+
+            MessageBox.Show(row + " " + colum);
+
+            int start_row = row + 1;
+            int start_colum = colum + 1;
+            int q1 = start_colum;
+            for(int i = start_row; i < 8;)
+            {
+                try
                 {
-                    ss4 = i;
-                    for (int q = s5; q < ss5; q++)
+                    if (this.board[i, q1] == -1)
                     {
-                        setSpace(row, q, color, null);
+                        break;
                     }
+                    else if (this.board[i, q1] == color)
+                    {
+                        int qq = colum;
+                        for (int ii = row; ii < i;)
+                        {
+                            MessageBox.Show("ran");
+                            setSpace(ii, qq, color, null);
+                            qq++;
+                            ii++;
+                        }
+                    }
+                    MessageBox.Show(""+i+" "+q1);
+                } catch(Exception ee)
+                {
+                    break;
                 }
+                q1++;
+                i++;
             }
+
+            //works top down left to right
 
         }
 
