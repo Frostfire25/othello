@@ -66,6 +66,7 @@ namespace Othello
             this.playing = true;
             this.black_pieces_left = 30;
             this.white_pieces_left = 30;
+            this.spaces_set = 0;
 
             //Made the board extra big to prevent out of bounds errors
             this.board = new int[8, 8];
@@ -110,7 +111,7 @@ namespace Othello
         private bool setSpace(int row, int colum, int color, PictureBox pictureBox)
         {
             passed = true;
-            if(spaces_set > 3)
+            if(spaces_set >= 4)
             {
                 int opposite = 1;
                 if (color == 1)
@@ -439,6 +440,103 @@ namespace Othello
                 }
                 q1++;
                 i++;
+            }
+
+
+            int start_row1 = row + 1;
+            int start_colum1 = colum - 1;
+            int q2 = start_colum1;
+            for (int i = start_row1; i < 8;)
+            {
+                try
+                {
+                    if (this.board[i, q2] == -1)
+                    {
+                        break;
+                    }
+                    else if (this.board[i, q2] == color)
+                    {
+                        int qq = colum;
+                        for (int ii = row; ii < i;)
+                        {
+                            MessageBox.Show("ran");
+                            setSpace(ii, qq, color, null);
+                            qq--;
+                            ii++;
+                        }
+                    }
+                    MessageBox.Show("" + i + " " + q2);
+                }
+                catch (Exception ee)
+                {
+                    break;
+                }
+                q2--;
+                i++;
+            }
+
+            int start_row2 = row - 1;
+            int start_colum2 = colum + 1;
+            int q3 = start_colum2;
+            for (int i = start_row2; i < 8;)
+            {
+                try
+                {
+                    if (this.board[i, q3] == -1)
+                    {
+                        break;
+                    }
+                    else if (this.board[i, q3] == color)
+                    {
+                        int qq = colum;
+                        for (int ii = row; ii > i;)
+                        {
+                            MessageBox.Show("ran");
+                            setSpace(ii, qq, color, null);
+                            qq++;
+                            ii--;
+                        }
+                    }
+                    MessageBox.Show("" + i + " " + q3);
+                }
+                catch (Exception ee)
+                {
+                    break;
+                }
+                q3++;
+                i--;
+            }
+
+            int start_row3 = row - 1;
+            int start_colum3 = colum - 1;
+            int q4 = start_colum3;
+            for (int i = start_row3; i < 8;)
+            {
+                try
+                {
+                    if (this.board[i, q4] == -1)
+                    {
+                        break;
+                    }
+                    else if (this.board[i, q4] == color)
+                    {
+                        int qq = colum;
+                        for (int ii = row; ii > i;)
+                        {
+                            MessageBox.Show("ran");
+                            setSpace(ii, qq, color, null);
+                            qq--;
+                            ii--;
+                        }
+                    }
+                    MessageBox.Show("" + i + " " + q4 + this.board[i,q4]);
+                }
+                catch (Exception ee)
+                {
+                    break;
+                }
+                q4--;
+                i--;
             }
 
             //works top down left to right
